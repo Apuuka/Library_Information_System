@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище Library_Information_SystemModel" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Библиотеки">
+          <Key>
+            <PropertyRef Name="BibliotekID" />
+          </Key>
+          <Property Name="BibliotekID" Type="int" Nullable="false" />
+          <Property Name="Name_Bib" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Adres_Bib" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Gorod_Bib" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Пополнение фонда">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FondID" Type="int" Nullable="false" />
+          <Property Name="Sotrudnik_ID" Type="int" Nullable="false" />
+          <Property Name="Istoch_lit_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Tip_LitID" Type="int" Nullable="false" />
+          <Property Name="Izdatelstvo" Type="nvarchar" MaxLength="100" />
+          <Property Name="Data_izdania" Type="int" />
+          <Property Name="Kolvo_ekz" Type="int" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Сотрудники">
+          <Key>
+            <PropertyRef Name="Sotrudnik_ID" />
+          </Key>
+          <Property Name="Sotrudnik_ID" Type="int" Nullable="false" />
+          <Property Name="Fam_Sotrudn" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="BibliotekID" Type="int" Nullable="false" />
+          <Property Name="Doljnost" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="God_rojdenia" Type="int" Nullable="false" />
+          <Property Name="God_postuprab" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Obrazovanie" Type="nvarchar" MaxLength="100" />
+          <Property Name="Zarplata" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Тип литературы">
+          <Key>
+            <PropertyRef Name="Tip_LitID" />
+          </Key>
+          <Property Name="Tip_LitID" Type="int" Nullable="false" />
+          <Property Name="Tip_Lit_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Фонд Библиотеки">
+          <Key>
+            <PropertyRef Name="FondID" />
+          </Key>
+          <Property Name="FondID" Type="int" Nullable="false" />
+          <Property Name="Name_Fond" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="BibliotekID" Type="int" Nullable="false" />
+          <Property Name="Kolvo_knig" Type="int" Nullable="false" />
+          <Property Name="Kolvo_jurnals" Type="int" Nullable="false" />
+          <Property Name="Kolvo_gazet" Type="int" Nullable="false" />
+          <Property Name="Kolvo_sborniks" Type="int" Nullable="false" />
+          <Property Name="Kolvo_dissert" Type="int" Nullable="false" />
+          <Property Name="Kolvo_referats" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Пополнени__Sotru__3F466844">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="1" />
+          <End Role="Пополнение фонда" Type="Self.Пополнение фонда" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="Sotrudnik_ID" />
+            </Principal>
+            <Dependent Role="Пополнение фонда">
+              <PropertyRef Name="Sotrudnik_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Пополнени__Tip_L__403A8C7D">
+          <End Role="Тип литературы" Type="Self.Тип литературы" Multiplicity="1" />
+          <End Role="Пополнение фонда" Type="Self.Пополнение фонда" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Тип литературы">
+              <PropertyRef Name="Tip_LitID" />
+            </Principal>
+            <Dependent Role="Пополнение фонда">
+              <PropertyRef Name="Tip_LitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Сотрудник__Bibli__47DBAE45">
+          <End Role="Библиотеки" Type="Self.Библиотеки" Multiplicity="1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Библиотеки">
+              <PropertyRef Name="BibliotekID" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="BibliotekID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Фонд Библ__Bibli__4316F928">
+          <End Role="Библиотеки" Type="Self.Библиотеки" Multiplicity="1" />
+          <End Role="Фонд Библиотеки" Type="Self.Фонд Библиотеки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Библиотеки">
+              <PropertyRef Name="BibliotekID" />
+            </Principal>
+            <Dependent Role="Фонд Библиотеки">
+              <PropertyRef Name="BibliotekID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пополнение фонда_Фонд Библиотеки">
+          <End Role="Фонд Библиотеки" Type="Self.Фонд Библиотеки" Multiplicity="1" />
+          <End Role="Пополнение фонда" Type="Self.Пополнение фонда" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Фонд Библиотеки">
+              <PropertyRef Name="FondID" />
+            </Principal>
+            <Dependent Role="Пополнение фонда">
+              <PropertyRef Name="FondID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище Library_Information_SystemModelContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Библиотеки" EntityType="Self.Библиотеки" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Пополнение фонда" EntityType="Self.Пополнение фонда" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Сотрудники" EntityType="Self.Сотрудники" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Тип литературы" EntityType="Self.Тип литературы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Фонд Библиотеки" EntityType="Self.Фонд Библиотеки" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Пополнени__Sotru__3F466844" Association="Self.FK__Пополнени__Sotru__3F466844">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="Пополнение фонда" EntitySet="Пополнение фонда" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Пополнени__Tip_L__403A8C7D" Association="Self.FK__Пополнени__Tip_L__403A8C7D">
+            <End Role="Тип литературы" EntitySet="Тип литературы" />
+            <End Role="Пополнение фонда" EntitySet="Пополнение фонда" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Сотрудник__Bibli__47DBAE45" Association="Self.FK__Сотрудник__Bibli__47DBAE45">
+            <End Role="Библиотеки" EntitySet="Библиотеки" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Фонд Библ__Bibli__4316F928" Association="Self.FK__Фонд Библ__Bibli__4316F928">
+            <End Role="Библиотеки" EntitySet="Библиотеки" />
+            <End Role="Фонд Библиотеки" EntitySet="Фонд Библиотеки" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пополнение фонда_Фонд Библиотеки" Association="Self.FK_Пополнение фонда_Фонд Библиотеки">
+            <End Role="Фонд Библиотеки" EntitySet="Фонд Библиотеки" />
+            <End Role="Пополнение фонда" EntitySet="Пополнение фонда" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Library_Information_SystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Библиотеки">
+          <Key>
+            <PropertyRef Name="BibliotekID" />
+          </Key>
+          <Property Name="BibliotekID" Type="Int32" Nullable="false" />
+          <Property Name="Name_Bib" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Adres_Bib" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gorod_Bib" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK__Сотрудник__Bibli__47DBAE45" FromRole="Библиотеки" ToRole="Сотрудники" />
+          <NavigationProperty Name="Фонд_Библиотеки" Relationship="Self.FK__Фонд_Библ__Bibli__4316F928" FromRole="Библиотеки" ToRole="Фонд_Библиотеки" />
+        </EntityType>
+        <EntityType Name="Пополнение_фонда">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FondID" Type="Int32" Nullable="false" />
+          <Property Name="Sotrudnik_ID" Type="Int32" Nullable="false" />
+          <Property Name="Istoch_lit_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tip_LitID" Type="Int32" Nullable="false" />
+          <Property Name="Izdatelstvo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Data_izdania" Type="Int32" />
+          <Property Name="Kolvo_ekz" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Сотрудники" Relationship="Self.FK__Пополнени__Sotru__3F466844" FromRole="Пополнение_фонда" ToRole="Сотрудники" />
+          <NavigationProperty Name="Тип_литературы" Relationship="Self.FK__Пополнени__Tip_L__403A8C7D" FromRole="Пополнение_фонда" ToRole="Тип_литературы" />
+          <NavigationProperty Name="Фонд_Библиотеки" Relationship="Self.FK_Пополнение_фонда_Фонд_Библиотеки" FromRole="Пополнение_фонда" ToRole="Фонд_Библиотеки" />
+        </EntityType>
+        <EntityType Name="Сотрудники">
+          <Key>
+            <PropertyRef Name="Sotrudnik_ID" />
+          </Key>
+          <Property Name="Sotrudnik_ID" Type="Int32" Nullable="false" />
+          <Property Name="Fam_Sotrudn" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BibliotekID" Type="Int32" Nullable="false" />
+          <Property Name="Doljnost" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="God_rojdenia" Type="Int32" Nullable="false" />
+          <Property Name="God_postuprab" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Obrazovanie" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Zarplata" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Библиотеки" Relationship="Self.FK__Сотрудник__Bibli__47DBAE45" FromRole="Сотрудники" ToRole="Библиотеки" />
+          <NavigationProperty Name="Пополнение_фонда" Relationship="Self.FK__Пополнени__Sotru__3F466844" FromRole="Сотрудники" ToRole="Пополнение_фонда" />
+        </EntityType>
+        <EntityType Name="Тип_литературы">
+          <Key>
+            <PropertyRef Name="Tip_LitID" />
+          </Key>
+          <Property Name="Tip_LitID" Type="Int32" Nullable="false" />
+          <Property Name="Tip_Lit_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Пополнение_фонда" Relationship="Self.FK__Пополнени__Tip_L__403A8C7D" FromRole="Тип_литературы" ToRole="Пополнение_фонда" />
+        </EntityType>
+        <EntityType Name="Фонд_Библиотеки">
+          <Key>
+            <PropertyRef Name="FondID" />
+          </Key>
+          <Property Name="FondID" Type="Int32" Nullable="false" />
+          <Property Name="Name_Fond" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BibliotekID" Type="Int32" Nullable="false" />
+          <Property Name="Kolvo_knig" Type="Int32" Nullable="false" />
+          <Property Name="Kolvo_jurnals" Type="Int32" Nullable="false" />
+          <Property Name="Kolvo_gazet" Type="Int32" Nullable="false" />
+          <Property Name="Kolvo_sborniks" Type="Int32" Nullable="false" />
+          <Property Name="Kolvo_dissert" Type="Int32" Nullable="false" />
+          <Property Name="Kolvo_referats" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Библиотеки" Relationship="Self.FK__Фонд_Библ__Bibli__4316F928" FromRole="Фонд_Библиотеки" ToRole="Библиотеки" />
+          <NavigationProperty Name="Пополнение_фонда" Relationship="Self.FK_Пополнение_фонда_Фонд_Библиотеки" FromRole="Фонд_Библиотеки" ToRole="Пополнение_фонда" />
+        </EntityType>
+        <Association Name="FK__Сотрудник__Bibli__47DBAE45">
+          <End Role="Библиотеки" Type="Self.Библиотеки" Multiplicity="1" />
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Библиотеки">
+              <PropertyRef Name="BibliotekID" />
+            </Principal>
+            <Dependent Role="Сотрудники">
+              <PropertyRef Name="BibliotekID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Фонд_Библ__Bibli__4316F928">
+          <End Role="Библиотеки" Type="Self.Библиотеки" Multiplicity="1" />
+          <End Role="Фонд_Библиотеки" Type="Self.Фонд_Библиотеки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Библиотеки">
+              <PropertyRef Name="BibliotekID" />
+            </Principal>
+            <Dependent Role="Фонд_Библиотеки">
+              <PropertyRef Name="BibliotekID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Пополнени__Sotru__3F466844">
+          <End Role="Сотрудники" Type="Self.Сотрудники" Multiplicity="1" />
+          <End Role="Пополнение_фонда" Type="Self.Пополнение_фонда" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Сотрудники">
+              <PropertyRef Name="Sotrudnik_ID" />
+            </Principal>
+            <Dependent Role="Пополнение_фонда">
+              <PropertyRef Name="Sotrudnik_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Пополнени__Tip_L__403A8C7D">
+          <End Role="Тип_литературы" Type="Self.Тип_литературы" Multiplicity="1" />
+          <End Role="Пополнение_фонда" Type="Self.Пополнение_фонда" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Тип_литературы">
+              <PropertyRef Name="Tip_LitID" />
+            </Principal>
+            <Dependent Role="Пополнение_фонда">
+              <PropertyRef Name="Tip_LitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пополнение_фонда_Фонд_Библиотеки">
+          <End Role="Фонд_Библиотеки" Type="Self.Фонд_Библиотеки" Multiplicity="1" />
+          <End Role="Пополнение_фонда" Type="Self.Пополнение_фонда" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Фонд_Библиотеки">
+              <PropertyRef Name="FondID" />
+            </Principal>
+            <Dependent Role="Пополнение_фонда">
+              <PropertyRef Name="FondID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Library_Information_SystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Библиотеки" EntityType="Self.Библиотеки" />
+          <EntitySet Name="Пополнение_фонда" EntityType="Self.Пополнение_фонда" />
+          <EntitySet Name="Сотрудники" EntityType="Self.Сотрудники" />
+          <EntitySet Name="Тип_литературы" EntityType="Self.Тип_литературы" />
+          <EntitySet Name="Фонд_Библиотеки" EntityType="Self.Фонд_Библиотеки" />
+          <AssociationSet Name="FK__Сотрудник__Bibli__47DBAE45" Association="Self.FK__Сотрудник__Bibli__47DBAE45">
+            <End Role="Библиотеки" EntitySet="Библиотеки" />
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Фонд_Библ__Bibli__4316F928" Association="Self.FK__Фонд_Библ__Bibli__4316F928">
+            <End Role="Библиотеки" EntitySet="Библиотеки" />
+            <End Role="Фонд_Библиотеки" EntitySet="Фонд_Библиотеки" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Пополнени__Sotru__3F466844" Association="Self.FK__Пополнени__Sotru__3F466844">
+            <End Role="Сотрудники" EntitySet="Сотрудники" />
+            <End Role="Пополнение_фонда" EntitySet="Пополнение_фонда" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Пополнени__Tip_L__403A8C7D" Association="Self.FK__Пополнени__Tip_L__403A8C7D">
+            <End Role="Тип_литературы" EntitySet="Тип_литературы" />
+            <End Role="Пополнение_фонда" EntitySet="Пополнение_фонда" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пополнение_фонда_Фонд_Библиотеки" Association="Self.FK_Пополнение_фонда_Фонд_Библиотеки">
+            <End Role="Фонд_Библиотеки" EntitySet="Фонд_Библиотеки" />
+            <End Role="Пополнение_фонда" EntitySet="Пополнение_фонда" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище Library_Information_SystemModelContainer" CdmEntityContainer="Library_Information_SystemEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Library_Information_SystemModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Библиотеки">
+            <EntityTypeMapping TypeName="Library_Information_SystemModel.Библиотеки">
+              <MappingFragment StoreEntitySet="Библиотеки">
+                <ScalarProperty Name="BibliotekID" ColumnName="BibliotekID" />
+                <ScalarProperty Name="Name_Bib" ColumnName="Name_Bib" />
+                <ScalarProperty Name="Adres_Bib" ColumnName="Adres_Bib" />
+                <ScalarProperty Name="Gorod_Bib" ColumnName="Gorod_Bib" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Пополнение_фонда">
+            <EntityTypeMapping TypeName="Library_Information_SystemModel.Пополнение_фонда">
+              <MappingFragment StoreEntitySet="Пополнение фонда">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FondID" ColumnName="FondID" />
+                <ScalarProperty Name="Sotrudnik_ID" ColumnName="Sotrudnik_ID" />
+                <ScalarProperty Name="Istoch_lit_Name" ColumnName="Istoch_lit_Name" />
+                <ScalarProperty Name="Tip_LitID" ColumnName="Tip_LitID" />
+                <ScalarProperty Name="Izdatelstvo" ColumnName="Izdatelstvo" />
+                <ScalarProperty Name="Data_izdania" ColumnName="Data_izdania" />
+                <ScalarProperty Name="Kolvo_ekz" ColumnName="Kolvo_ekz" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Сотрудники">
+            <EntityTypeMapping TypeName="Library_Information_SystemModel.Сотрудники">
+              <MappingFragment StoreEntitySet="Сотрудники">
+                <ScalarProperty Name="Sotrudnik_ID" ColumnName="Sotrudnik_ID" />
+                <ScalarProperty Name="Fam_Sotrudn" ColumnName="Fam_Sotrudn" />
+                <ScalarProperty Name="BibliotekID" ColumnName="BibliotekID" />
+                <ScalarProperty Name="Doljnost" ColumnName="Doljnost" />
+                <ScalarProperty Name="God_rojdenia" ColumnName="God_rojdenia" />
+                <ScalarProperty Name="God_postuprab" ColumnName="God_postuprab" />
+                <ScalarProperty Name="Obrazovanie" ColumnName="Obrazovanie" />
+                <ScalarProperty Name="Zarplata" ColumnName="Zarplata" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Тип_литературы">
+            <EntityTypeMapping TypeName="Library_Information_SystemModel.Тип_литературы">
+              <MappingFragment StoreEntitySet="Тип литературы">
+                <ScalarProperty Name="Tip_LitID" ColumnName="Tip_LitID" />
+                <ScalarProperty Name="Tip_Lit_Name" ColumnName="Tip_Lit_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Фонд_Библиотеки">
+            <EntityTypeMapping TypeName="Library_Information_SystemModel.Фонд_Библиотеки">
+              <MappingFragment StoreEntitySet="Фонд Библиотеки">
+                <ScalarProperty Name="FondID" ColumnName="FondID" />
+                <ScalarProperty Name="Name_Fond" ColumnName="Name_Fond" />
+                <ScalarProperty Name="BibliotekID" ColumnName="BibliotekID" />
+                <ScalarProperty Name="Kolvo_knig" ColumnName="Kolvo_knig" />
+                <ScalarProperty Name="Kolvo_jurnals" ColumnName="Kolvo_jurnals" />
+                <ScalarProperty Name="Kolvo_gazet" ColumnName="Kolvo_gazet" />
+                <ScalarProperty Name="Kolvo_sborniks" ColumnName="Kolvo_sborniks" />
+                <ScalarProperty Name="Kolvo_dissert" ColumnName="Kolvo_dissert" />
+                <ScalarProperty Name="Kolvo_referats" ColumnName="Kolvo_referats" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
