@@ -5,9 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Library_Information_System"
         mc:Ignorable="d"
-        Title="Library_Information_System" Height="450" Width="800" FontFamily="Times New Roman" Icon="/res/zaglushka.png">
+        Title="Library_Information_System" Height="750" Width="1350" FontFamily="Times New Roman" Icon="/res/zaglushka.png">
     <Grid>
-        <Image Source="res/zaglushka.png" HorizontalAlignment="Left" Margin="0,0,0,367" Width="117"></Image>
         <Frame Grid.Row="1" Name="MainFrame" ContentRendered="MainFrame_ContentRendered" NavigationUIVisibility="Hidden"></Frame>
         <Button Content="Назад" Name="BtnBack" Width="175" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Click="BtnBack_Click" Margin="0,10,10,0" />
     </Grid>

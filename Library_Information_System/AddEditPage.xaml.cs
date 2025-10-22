@@ -20,9 +20,84 @@ namespace Library_Information_System
     /// </summary>
     public partial class AddEditPage : Page
     {
-        public AddEditPage()
+        private Пополнение_фонда _currentItem = new Пополнение_фонда();
+
+        public AddEditPage(Пополнение_фонда selectedItem)
         {
             InitializeComponent();
+
+            if (selectedItem != null)
+                _currentItem = selectedItem;
+
+            DataContext = _currentItem;
+
+            string[] allowedFunds = { "Основной книжный фонд", "Электронные ресурсы" };
+
+            CBoxFond.ItemsSource = Library_Information_SystemEntities.getInstance().Фонд_Библиотеки
+                .Where(f => allowedFunds.Contains(f.Name_Fond))
+                .ToList();
+
+            CBoxFond.ItemsSource = Library_Information_SystemEntities.getInstance().Фонд_Библиотеки.ToList();
+            CBoxSotrudnik.ItemsSource = Library_Information_SystemEntities.getInstance().Сотрудники.ToList();
+            CBoxTipLit.ItemsSource = Library_Information_SystemEntities.getInstance().Тип_литературы.ToList();
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder errors = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(_currentItem.Istoch_lit_Name))
+                errors.AppendLine("Укажите название источника");
+            if (string.IsNullOrWhiteSpace(_currentItem.Izdatelstvo))
+                errors.AppendLine("Укажите издательство");
+
+            if (_currentItem.Data_izdania <= 1000 || _currentItem.Data_izdania > DateTime.Now.Year)
+                errors.AppendLine("Укажите корректный год издания");
+            if (_currentItem.Kolvo_ekz < 0)
+                errors.AppendLine("Количество экземпляров не может быть отрицательным");
+
+            if (_currentItem.FondID == 0)
+            {
+                errors.AppendLine("Выберите фонд библиотеки (Основной книжный фонд или Электронные ресурсы)");
+            }
+            if (_currentItem.Sotrudnik_ID == 0)
+                errors.AppendLine("Выберите сотрудника");
+
+            if (_currentItem.Tip_LitID == 0)
+                errors.AppendLine("Выберите тип литературы");
+
+            if (string.IsNullOrWhiteSpace(_currentItem.Istoch_lit_Name))
+                errors.AppendLine("Укажите название источника");
+            if (string.IsNullOrWhiteSpace(_currentItem.Izdatelstvo))
+                errors.AppendLine("Укажите издательство");
+
+            if (_currentItem.Data_izdania <= 1000 || _currentItem.Data_izdania > DateTime.Now.Year)
+                errors.AppendLine("Укажите корректный год издания");
+            if (_currentItem.Kolvo_ekz < 0)
+                errors.AppendLine("Количество экземпляров не может быть отрицательным");
+
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString(), "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (_currentItem.ID == 0)
+            {
+                Library_Information_SystemEntities.getInstance().Пополнение_фонда.Add(_currentItem);
+            }
+
+            try
+            {
+                Library_Information_SystemEntities.getInstance().SaveChanges();
+                MessageBox.Show("Информация успешно сохранена!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Manager.MainFrame.GoBack();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка сохранения", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

@@ -9,6 +9,49 @@
       Title="AddEditPage">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Название источника:" FontSize="18" Grid.Row="0" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Name="TxtName" Text="{Binding Istoch_lit_Name}" Grid.Row="0" Grid.Column="1" Margin="5" FontSize="16" Height="30"/>
+
+        <TextBlock Text="Издательство:" FontSize="18" Grid.Row="1" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Name="TxtIzdatelstvo" Text="{Binding Izdatelstvo}" Grid.Row="1" Grid.Column="1" Margin="5" FontSize="16" Height="30"/>
+
+        <TextBlock Text="Год издания:" FontSize="18" Grid.Row="2" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Name="TxtData" Text="{Binding Data_izdania}" Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" Height="30"/>
+
+        <TextBlock Text="Количество экземпляров:" FontSize="18" Grid.Row="3" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Name="TxtKolvo" Text="{Binding Kolvo_ekz}" Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16" Height="30"/>
+
+
+        <TextBlock Text="Фонд библиотеки:" FontSize="18" Grid.Row="5" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox Name="CBoxFond" Grid.Row="5" Grid.Column="1" Margin="5" FontSize="16" Height="30"
+                  DisplayMemberPath="Name_Fond" 
+                  SelectedItem="{Binding Фонд_Библиотеки}"/>
+        <TextBlock Text="Сотрудник:" FontSize="18" Grid.Row="6" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox Name="CBoxSotrudnik" Grid.Row="6" Grid.Column="1" Margin="5" FontSize="16" Height="30"
+                  DisplayMemberPath="Fam_Sotrudn"
+                  SelectedItem="{Binding Сотрудники}"/>
+        <TextBlock Text="Тип литературы:" FontSize="18" Grid.Row="7" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox Name="CBoxTipLit" Grid.Row="7" Grid.Column="1" Margin="5" FontSize="16" Height="30"
+                  DisplayMemberPath="Tip_Lit_Name"
+                  SelectedItem="{Binding Тип_литературы}"/> 
         
+        <Button Name="SaveButton" Content="Сохранить" Grid.Row="9" Grid.ColumnSpan="2" Margin="10" FontSize="20" Height="40" Click="SaveButton_Click"/>
     </Grid>
 </Page>

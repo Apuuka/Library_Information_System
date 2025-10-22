@@ -32,13 +32,11 @@ namespace Library_Information_System
         {
             var currentProducts = Library_Information_SystemEntities.getInstance().Пополнение_фонда.ToList();
 
-            // Поиск
             currentProducts = currentProducts.Where(p =>
                 (p.Istoch_lit_Name.ToLower().Contains(TBoxSearch.Text.ToLower()) ||
                  p.Izdatelstvo.ToLower().Contains(TBoxSearch.Text.ToLower()))
             ).ToList();
 
-            // Фильтрация
             switch (FiltrComboBox.SelectedIndex)
             {
                 case 1:
@@ -75,7 +73,7 @@ namespace Library_Information_System
             }
 
             _filteredProducts = currentProducts;
-            _currentPage = 1; // Сбрасываем на первую страницу при каждом обновлении
+            _currentPage = 1;
             ChangePage();
         }
 
@@ -86,18 +84,15 @@ namespace Library_Information_System
             int totalItems = _filteredProducts.Count;
             _maxPages = (int)Math.Ceiling((double)totalItems / PageSize);
 
-            if (_maxPages == 0) _maxPages = 1; // Если записей нет, все равно будет 1 страница
+            if (_maxPages == 0) _maxPages = 1;
             if (_currentPage > _maxPages) _currentPage = _maxPages;
 
-            // Получаем записи для текущей страницы
             var pageItems = _filteredProducts.Skip((_currentPage - 1) * PageSize).Take(PageSize).ToList();
             ProductListView.ItemsSource = pageItems;
 
-            // Обновляем информацию о страницах и количестве записей
             PageInfoTextBlock.Text = $"Страница {_currentPage}/{_maxPages}";
             RecordCountTextBlock.Text = $"Показано: {pageItems.Count} из {totalItems}";
 
-            // Управляем доступностью кнопок
             PrevPageButton.IsEnabled = _currentPage > 1;
             NextPageButton.IsEnabled = _currentPage < _maxPages;
         }
@@ -125,8 +120,21 @@ namespace Library_Information_System
         private void SortComboBox_Checked(object sender, RoutedEventArgs e) => UpdateProducts();
         private void SortComboBox1_Checked(object sender, RoutedEventArgs e) => UpdateProducts();
 
-        // Эти методы пока остаются пустыми
         private void Delete_Click(object sender, RoutedEventArgs e) { }
-        private void Redact_Click(object sender, RoutedEventArgs e) { }
+        private void Redact_Click(object sender, RoutedEventArgs e) 
+        {
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(new AddEditPage(null));
+            }
+        }
+
+        private void BtnAddRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(new AddEditPage(null));
+            }
+        }
     }
 }
