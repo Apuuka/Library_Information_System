@@ -12,29 +12,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Win32;
-using System.ComponentModel;
 
 namespace Library_Information_System
 {
-    public partial class AddEditPage : Page, INotifyPropertyChanged
+    public partial class AddEditPage : Page
     {
         private Пополнение_фонда _currentItem;
-        private string _newPhotoPath;
 
-        public string NewPhotoPath
-        {
-            get { return _newPhotoPath; }
-            set
-            {
-                if (_newPhotoPath != value)
-                {
-                    _newPhotoPath = value;
-                    OnPropertyChanged(nameof(NewPhotoPath));
-                }
-            }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
         public AddEditPage(Пополнение_фонда selectedItem)
         {
             InitializeComponent();
@@ -53,14 +37,11 @@ namespace Library_Information_System
             if (selectedItem != null)
             {
                 _currentItem = selectedItem;
-                NewPhotoPath = _currentItem.Image;
 
                 CBoxFond.SelectedItem = (CBoxFond.ItemsSource as List<Фонд_Библиотеки>)
                                         .FirstOrDefault(f => f.FondID == _currentItem.FondID);
-
                 CBoxSotrudnik.SelectedItem = allSotrudniki
                                         .FirstOrDefault(s => s.Sotrudnik_ID == _currentItem.Sotrudnik_ID);
-
                 CBoxTipLit.SelectedItem = allTipLits
                                         .FirstOrDefault(t => t.Tip_LitID == _currentItem.Tip_LitID);
             }
@@ -69,26 +50,6 @@ namespace Library_Information_System
                 _currentItem = new Пополнение_фонда();
             }
             DataContext = _currentItem;
-        }
-        
-
-        protected void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        
-
-        private void ImageButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Изображения|*.jpg;*.jpeg;*.png";
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                NewPhotoPath = openFileDialog.FileName;
-
-                _currentItem.Image = openFileDialog.FileName;
-            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
