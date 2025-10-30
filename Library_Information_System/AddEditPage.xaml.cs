@@ -17,7 +17,7 @@ using System.ComponentModel;
 
 namespace Library_Information_System
 {
-    public partial class AddEditPage : Page
+    public partial class AddEditPage : Page, INotifyPropertyChanged
     {
         private Пополнение_фонда _currentItem;
         private string _newPhotoPath;
@@ -57,8 +57,10 @@ namespace Library_Information_System
 
                 CBoxFond.SelectedItem = (CBoxFond.ItemsSource as List<Фонд_Библиотеки>)
                                         .FirstOrDefault(f => f.FondID == _currentItem.FondID);
+
                 CBoxSotrudnik.SelectedItem = allSotrudniki
                                         .FirstOrDefault(s => s.Sotrudnik_ID == _currentItem.Sotrudnik_ID);
+
                 CBoxTipLit.SelectedItem = allTipLits
                                         .FirstOrDefault(t => t.Tip_LitID == _currentItem.Tip_LitID);
             }

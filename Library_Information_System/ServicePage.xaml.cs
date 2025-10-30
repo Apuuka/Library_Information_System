@@ -120,7 +120,45 @@ namespace Library_Information_System
         private void SortComboBox_Checked(object sender, RoutedEventArgs e) => UpdateProducts();
         private void SortComboBox1_Checked(object sender, RoutedEventArgs e) => UpdateProducts();
 
-        private void Delete_Click(object sender, RoutedEventArgs e) { }
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is Пополнение_фонда itemToDelete)
+            {
+                var context = Library_Information_SystemEntities.getInstance();
+
+                var result = MessageBox.Show(
+                    $"Вы уверены, что хотите удалить источник \"{itemToDelete.Istoch_lit_Name}\"?",
+                    "Подтверждение удаления",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        var existingItem = context.Пополнение_фонда.Find(itemToDelete.ID);
+
+                        if (existingItem != null)
+                        {
+                            context.Пополнение_фонда.Remove(existingItem);
+                            context.SaveChanges();
+
+                            MessageBox.Show("Источник успешно удалён.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            UpdateProducts();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка при удалении: {ex.Message}\nВозможно, этот источник используется в другой таблице.",
+                                        "Ошибка",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
         private void Redact_Click(object sender, RoutedEventArgs e) 
         {
             if (NavigationService != null)
