@@ -159,11 +159,15 @@ namespace Library_Information_System
             }
         }
 
-        private void Redact_Click(object sender, RoutedEventArgs e) 
+        private void Redact_Click(object sender, RoutedEventArgs e)
         {
-            if (NavigationService != null)
+            var button = sender as Button;
+            if (button == null)
+                return;
+            var selectedItem = button.DataContext as Пополнение_фонда;
+            if (selectedItem != null && NavigationService != null)
             {
-                NavigationService.Navigate(new AddEditPage(null));
+                NavigationService.Navigate(new AddEditPage(selectedItem));
             }
         }
 
