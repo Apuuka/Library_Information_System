@@ -5,53 +5,161 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Library_Information_System"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="AddEditPage">
+      d:DesignHeight="550" d:DesignWidth="800"
+      Title="AddEditPage"
+      FontFamily="Segoe UI" 
+      Background="#F0F2F5">
+
+    <Page.Resources>
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="10,5"/>
+            <Setter Property="Padding" Value="15"/>
+        </Style>
+
+        <DropShadowEffect x:Key="CardShadow" ShadowDepth="2" Color="#AAAAAA" Opacity="0.3" BlurRadius="10"/>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="#4A90E2"
+                                CornerRadius="4" 
+                                BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#357ABD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2A6496"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="34"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="34"/>
+        </Style>
+    </Page.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
+        <Border Style="{StaticResource CardBorder}" 
+                Effect="{StaticResource CardShadow}"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"
+                Width="700">
 
-        <TextBlock Text="Название источника:" FontSize="18" Grid.Row="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Name="TxtName" Text="{Binding Istoch_lit_Name}" Grid.Row="0" Grid.Column="1" Margin="5" FontSize="16" Height="30"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Издательство:" FontSize="18" Grid.Row="1" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Name="TxtIzdatelstvo" Text="{Binding Izdatelstvo}" Grid.Row="1" Grid.Column="1" Margin="5" FontSize="16" Height="30"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
-        <TextBlock Text="Год издания:" FontSize="18" Grid.Row="2" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Name="TxtData" Text="{Binding Data_izdania}" Grid.Row="2" Grid.Column="1" Margin="5" FontSize="16" Height="30"/>
+                <TextBlock Text="Название источника:" FontSize="16" FontWeight="SemiBold" Grid.Row="0" VerticalAlignment="Center" Margin="5"/>
+                <TextBox Name="TxtName" Text="{Binding Istoch_lit_Name}" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
-        <TextBlock Text="Количество экземпляров:" FontSize="18" Grid.Row="3" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Name="TxtKolvo" Text="{Binding Kolvo_ekz}" Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16" Height="30"/>
+                <TextBlock Text="Издательство:" FontSize="16" FontWeight="SemiBold" Grid.Row="1" VerticalAlignment="Center" Margin="5"/>
+                <TextBox Name="TxtIzdatelstvo" Text="{Binding Izdatelstvo}" Grid.Row="1" Grid.Column="1" Margin="5"/>
 
+                <TextBlock Text="Год издания:" FontSize="16" FontWeight="SemiBold" Grid.Row="2" VerticalAlignment="Center" Margin="5"/>
+                <TextBox Name="TxtData" Text="{Binding Data_izdania}" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
-        <TextBlock Text="Фонд библиотеки:" FontSize="18" Grid.Row="5" VerticalAlignment="Center" Margin="5"/>
-        <ComboBox Name="CBoxFond" Grid.Row="5" Grid.Column="1" Margin="5" FontSize="16" Height="30"
-                  DisplayMemberPath="Name_Fond" 
-                  SelectedItem="{Binding Фонд_Библиотеки}"/>
-        <TextBlock Text="Сотрудник:" FontSize="18" Grid.Row="6" VerticalAlignment="Center" Margin="5"/>
-        <ComboBox Name="CBoxSotrudnik" Grid.Row="6" Grid.Column="1" Margin="5" FontSize="16" Height="30"
-                  DisplayMemberPath="Fam_Sotrudn"
-                  SelectedItem="{Binding Сотрудники}"/>
-        <TextBlock Text="Тип литературы:" FontSize="18" Grid.Row="7" VerticalAlignment="Center" Margin="5"/>
-        <ComboBox Name="CBoxTipLit" Grid.Row="7" Grid.Column="1" Margin="5" FontSize="16" Height="30"
-                  DisplayMemberPath="Tip_Lit_Name"
-                  SelectedItem="{Binding Тип_литературы}"/> 
-        
-        <Button Name="SaveButton" Content="Сохранить" Grid.Row="9" Grid.ColumnSpan="2" Margin="10" FontSize="20" Height="40" Click="SaveButton_Click"/>
+                <TextBlock Text="Количество экземпляров:" FontSize="16" FontWeight="SemiBold" Grid.Row="3" VerticalAlignment="Center" Margin="5"/>
+                <TextBox Name="TxtKolvo" Text="{Binding Kolvo_ekz}" Grid.Row="3" Grid.Column="1" Margin="5"/>
+
+                <TextBlock Text="Фонд библиотеки:" FontSize="16" FontWeight="SemiBold" Grid.Row="5" VerticalAlignment="Center" Margin="5"/>
+                <ComboBox Name="CBoxFond" Grid.Row="5" Grid.Column="1" Margin="5"
+                          DisplayMemberPath="Name_Fond" 
+                          SelectedValuePath="ID" SelectedValue="{Binding FondID}"/>
+
+                <TextBlock Text="Сотрудник:" FontSize="16" FontWeight="SemiBold" Grid.Row="6" VerticalAlignment="Center" Margin="5"/>
+                <ComboBox Name="CBoxSotrudnik" Grid.Row="6" Grid.Column="1" Margin="5"
+                          DisplayMemberPath="Fam_Sotrudn"
+                          SelectedValuePath="ID" SelectedValue="{Binding Sotrudnik_ID}"/>
+
+                <TextBlock Text="Тип литературы:" FontSize="16" FontWeight="SemiBold" Grid.Row="7" VerticalAlignment="Center" Margin="5"/>
+                <ComboBox Name="CBoxTipLit" Grid.Row="7" Grid.Column="1" Margin="5"
+                          DisplayMemberPath="Tip_Lit_Name"
+                          SelectedValuePath="ID" SelectedValue="{Binding Tip_LitID}"/>
+
+                <TextBlock Text="Изображение:" FontSize="16" FontWeight="SemiBold" Grid.Row="8" VerticalAlignment="Top" Margin="5"/>
+                <StackPanel Orientation="Vertical" Grid.Row="8" Grid.Column="1" Margin="5">
+
+                    <Border BorderBrush="#CCCCCC" BorderThickness="1" Width="200" Height="150" Margin="0,0,0,10" HorizontalAlignment="Left" Background="#F8F8F8">
+                        <Image Name="ItemImage" Stretch="Uniform">
+                            <Image.Source>
+                                <Binding Path="NewPhotoPath" RelativeSource="{RelativeSource AncestorType=Page}">
+                                    <Binding.TargetNullValue>
+                                        <ImageSource>res/1.png</ImageSource>
+                                    </Binding.TargetNullValue>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+
+                    <Button Content="Выбрать фотографию..." 
+                            Name="ImageButton"
+                            Click="ImageButton_Click"
+                            HorizontalAlignment="Left"
+                            Width="200"
+                            Style="{StaticResource PrimaryButton}" 
+                            Background="#6c757d"
+                            Height="30"
+                            Padding="10,0"/>
+                </StackPanel>
+
+                <Button Name="SaveButton" 
+                        Content="Сохранить" 
+                        Grid.Row="10" 
+                        Grid.ColumnSpan="2" 
+                        Margin="10" 
+                        Style="{StaticResource PrimaryButton}" 
+                        Padding="15,8"
+                        FontSize="18"
+                        Click="SaveButton_Click"
+                        HorizontalAlignment="Stretch"/>
+
+            </Grid>
+        </Border>
     </Grid>
 </Page>

@@ -12,34 +12,81 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using System.ComponentModel;
 
 namespace Library_Information_System
 {
-    /// <summary>
-    /// Логика взаимодействия для AddEditPage.xaml
-    /// </summary>
     public partial class AddEditPage : Page
     {
-        private Пополнение_фонда _currentItem = new Пополнение_фонда();
+        private Пополнение_фонда _currentItem;
+        private string _newPhotoPath;
 
+        public string NewPhotoPath
+        {
+            get { return _newPhotoPath; }
+            set
+            {
+                if (_newPhotoPath != value)
+                {
+                    _newPhotoPath = value;
+                    OnPropertyChanged(nameof(NewPhotoPath));
+                }
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
         public AddEditPage(Пополнение_фонда selectedItem)
         {
             InitializeComponent();
 
-            if (selectedItem != null)
-                _currentItem = selectedItem;
-
-            DataContext = _currentItem;
-
             string[] allowedFunds = { "Основной книжный фонд", "Электронные ресурсы" };
+            var allFunds = Library_Information_SystemEntities.getInstance().Фонд_Библиотеки.ToList();
+            var allSotrudniki = Library_Information_SystemEntities.getInstance().Сотрудники.ToList();
+            var allTipLits = Library_Information_SystemEntities.getInstance().Тип_литературы.ToList();
 
-            CBoxFond.ItemsSource = Library_Information_SystemEntities.getInstance().Фонд_Библиотеки
+            CBoxFond.ItemsSource = allFunds
                 .Where(f => allowedFunds.Contains(f.Name_Fond))
                 .ToList();
+            CBoxSotrudnik.ItemsSource = allSotrudniki;
+            CBoxTipLit.ItemsSource = allTipLits;
 
-            CBoxFond.ItemsSource = Library_Information_SystemEntities.getInstance().Фонд_Библиотеки.ToList();
-            CBoxSotrudnik.ItemsSource = Library_Information_SystemEntities.getInstance().Сотрудники.ToList();
-            CBoxTipLit.ItemsSource = Library_Information_SystemEntities.getInstance().Тип_литературы.ToList();
+            if (selectedItem != null)
+            {
+                _currentItem = selectedItem;
+                NewPhotoPath = _currentItem.Image;
+
+                CBoxFond.SelectedItem = (CBoxFond.ItemsSource as List<Фонд_Библиотеки>)
+                                        .FirstOrDefault(f => f.FondID == _currentItem.FondID);
+                CBoxSotrudnik.SelectedItem = allSotrudniki
+                                        .FirstOrDefault(s => s.Sotrudnik_ID == _currentItem.Sotrudnik_ID);
+                CBoxTipLit.SelectedItem = allTipLits
+                                        .FirstOrDefault(t => t.Tip_LitID == _currentItem.Tip_LitID);
+            }
+            else
+            {
+                _currentItem = new Пополнение_фонда();
+            }
+            DataContext = _currentItem;
+        }
+        
+
+        protected void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+
+        private void ImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Изображения|*.jpg;*.jpeg;*.png";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                NewPhotoPath = openFileDialog.FileName;
+
+                _currentItem.Image = openFileDialog.FileName;
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -57,24 +104,11 @@ namespace Library_Information_System
                 errors.AppendLine("Количество экземпляров не может быть отрицательным");
 
             if (_currentItem.FondID == 0)
-            {
                 errors.AppendLine("Выберите фонд библиотеки (Основной книжный фонд или Электронные ресурсы)");
-            }
             if (_currentItem.Sotrudnik_ID == 0)
                 errors.AppendLine("Выберите сотрудника");
-
             if (_currentItem.Tip_LitID == 0)
                 errors.AppendLine("Выберите тип литературы");
-
-            if (string.IsNullOrWhiteSpace(_currentItem.Istoch_lit_Name))
-                errors.AppendLine("Укажите название источника");
-            if (string.IsNullOrWhiteSpace(_currentItem.Izdatelstvo))
-                errors.AppendLine("Укажите издательство");
-
-            if (_currentItem.Data_izdania <= 1000 || _currentItem.Data_izdania > DateTime.Now.Year)
-                errors.AppendLine("Укажите корректный год издания");
-            if (_currentItem.Kolvo_ekz < 0)
-                errors.AppendLine("Количество экземпляров не может быть отрицательным");
 
             if (errors.Length > 0)
             {
@@ -82,14 +116,31 @@ namespace Library_Information_System
                 return;
             }
 
-            if (_currentItem.ID == 0)
-            {
-                Library_Information_SystemEntities.getInstance().Пополнение_фонда.Add(_currentItem);
-            }
-
             try
             {
-                Library_Information_SystemEntities.getInstance().SaveChanges();
+                var context = Library_Information_SystemEntities.getInstance();
+
+                if (_currentItem.ID > 0)
+                {
+                    var existingItem = context.Пополнение_фонда.Find(_currentItem.ID);
+
+                    if (existingItem != null)
+                    {
+                        existingItem.Istoch_lit_Name = _currentItem.Istoch_lit_Name;
+                        existingItem.Izdatelstvo = _currentItem.Izdatelstvo;
+                        existingItem.Data_izdania = _currentItem.Data_izdania;
+                        existingItem.Kolvo_ekz = _currentItem.Kolvo_ekz;
+                        existingItem.FondID = _currentItem.FondID;
+                        existingItem.Sotrudnik_ID = _currentItem.Sotrudnik_ID;
+                        existingItem.Tip_LitID = _currentItem.Tip_LitID;
+                    }
+                }
+                else
+                {
+                    context.Пополнение_фонда.Add(_currentItem);
+                }
+
+                context.SaveChanges();
                 MessageBox.Show("Информация успешно сохранена!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 Manager.MainFrame.GoBack();
