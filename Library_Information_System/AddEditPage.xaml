@@ -124,9 +124,6 @@
                           DisplayMemberPath="Tip_Lit_Name"
                           SelectedValuePath="Tip_LitID" SelectedValue="{Binding Tip_LitID}"/>
 
-              
-
-
                 <Button Name="SaveButton" 
                         Content="Сохранить" 
                         Grid.Row="9" 

@@ -40,29 +40,22 @@ namespace Library_Information_System
             switch (FiltrComboBox.SelectedIndex)
             {
                 case 1:
-                    currentProducts = currentProducts.Where(p => p.Izdatelstvo.Contains("Издательский дом «Республика Башкортостан»")).ToList();
+                    currentProducts = currentProducts.Where(p => p.Тип_литературы.Tip_Lit_Name.Contains("Фэнтези")).ToList();
                     break;
                 case 2:
-                    currentProducts = currentProducts.Where(p => p.Izdatelstvo.Contains("Башкирское книжное издательство")).ToList();
+                    currentProducts = currentProducts.Where(p => p.Тип_литературы.Tip_Lit_Name.Contains("Детектив")).ToList();
                     break;
                 case 3:
-                    currentProducts = currentProducts.Where(p => p.Izdatelstvo.Contains("Издательство УГНТУ")).ToList();
+                    currentProducts = currentProducts.Where(p => p.Тип_литературы.Tip_Lit_Name.Contains("Любовный роман")).ToList();
                     break;
                 case 4:
-                    currentProducts = currentProducts.Where(p => p.Izdatelstvo.Contains("Уфа")).ToList();
+                    currentProducts = currentProducts.Where(p => p.Тип_литературы.Tip_Lit_Name.Contains("Научная фантастика")).ToList();
                     break;
                 case 5:
-                    currentProducts = currentProducts.Where(p => p.Izdatelstvo.Contains("Эксмо")).ToList();
-                    break;
-                case 6:
-                    currentProducts = currentProducts.Where(p => p.Izdatelstvo.Contains("Китап")).ToList();
-                    break;
-                case 7:
-                    currentProducts = currentProducts.Where(p => p.Izdatelstvo.Contains("Детская и юношеская книга")).ToList();
+                    currentProducts = currentProducts.Where(p => p.Тип_литературы.Tip_Lit_Name.Contains("Научно-популярная литература")).ToList();
                     break;
             }
 
-            // Сортировка
             if (SortComboBox.IsChecked == true)
             {
                 currentProducts = currentProducts.OrderBy(p => p.Kolvo_ekz).ToList();

@@ -157,14 +157,12 @@
                 <StackPanel Grid.Column="2" Margin="10,0" VerticalAlignment="Top">
                     <TextBlock Text="Фильтрация по издательству" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8"/>
                     <ComboBox Name="FiltrComboBox" SelectionChanged="FiltrComboBox_SelectionChanged" Width="Auto">
-                        <ComboBoxItem Content="Все издательства"/>
-                        <ComboBoxItem Content="Издательский дом «Республика Башкортостан»"/>
-                        <ComboBoxItem Content="Башкирское книжное издательство"/>
-                        <ComboBoxItem Content="Издательство УГНТУ"/>
-                        <ComboBoxItem Content="Уфа"/>
-                        <ComboBoxItem Content="Эксмо"/>
-                        <ComboBoxItem Content="Китап"/>
-                        <ComboBoxItem Content="Детская и юношеская книга"/>
+                        <ComboBoxItem Content="Все типы"/>
+                        <ComboBoxItem Content="Фэнтези"/>
+                        <ComboBoxItem Content="Детектив"/>
+                        <ComboBoxItem Content="Любовный роман"/>
+                        <ComboBoxItem Content="Научная фантастика"/>
+                        <ComboBoxItem Content="Научно-популярная литература"/>
                     </ComboBox>
                 </StackPanel>
             </Grid>
